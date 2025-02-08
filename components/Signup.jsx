@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { signInAction } from "@/actions/auth.actions";
+import { signUpAction } from "@/actions/auth.actions";
+import Loading from "@/app/loading";
 
-export default function Signin() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+export default function Signup() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -16,24 +22,43 @@ export default function Signin() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
-    const result = await signInAction(formData);
+    setSuccess(null);
+  
+    const result = await signUpAction(formData);
     setLoading(false);
-
+  
     if (result.error) {
       setError(result.error);
     } else {
+      setSuccess(result.success);
       localStorage.setItem("userId", result.userId);
-      window.location.href = "/";
+      setTimeout(() => (window.location.href = "/"), 200);
     }
   };
-
+  if (loading) return <Loading />;
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 text-center">Sign In</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
+
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+        {success && <p className="text-green-500 text-center mt-2">{success}</p>}
+
         <form onSubmit={handleSubmit} className="mt-6">
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium">Name</label>
+            <input
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              required
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block text-gray-700 font-medium">Email</label>
             <input
@@ -46,6 +71,7 @@ export default function Signin() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
+
           <div className="mb-6">
             <label className="block text-gray-700 font-medium">Password</label>
             <input
@@ -58,6 +84,7 @@ export default function Signin() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
+
           <button
             type="submit"
             className={`w-full text-white py-3 rounded-md transition duration-300 ${
@@ -65,13 +92,14 @@ export default function Signin() {
             }`}
             disabled={loading}
           >
-            {loading ? "Signing In..." : "Sign In"}
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
+
         <p className="text-gray-600 text-center mt-4">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-600 hover:underline">
-            Sign Up
+          Already have an account?{" "}
+          <a href="/signin" className="text-blue-600 hover:underline">
+            Sign In
           </a>
         </p>
       </div>
