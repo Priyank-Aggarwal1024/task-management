@@ -23,10 +23,8 @@ export default function Signin() {
     if (result.error) {
       setError(result.error);
     } else {
-      // Save user ID after successful login
-      localStorage.setItem("userId", result.userId); // Store in localStorage
-
-      window.location.href = "/"; // Redirect on success
+      localStorage.setItem("userId", result.userId);
+      window.location.href = "/";
     }
   };
 
@@ -35,9 +33,7 @@ export default function Signin() {
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Sign In</h2>
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-
         <form onSubmit={handleSubmit} className="mt-6">
-          {/* Email Input */}
           <div className="mb-4">
             <label className="block text-gray-700 font-medium">Email</label>
             <input
@@ -50,8 +46,6 @@ export default function Signin() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
-
-          {/* Password Input */}
           <div className="mb-6">
             <label className="block text-gray-700 font-medium">Password</label>
             <input
@@ -64,8 +58,6 @@ export default function Signin() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
             className={`w-full text-white py-3 rounded-md transition duration-300 ${
@@ -76,8 +68,6 @@ export default function Signin() {
             {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
-
-        {/* Link to Sign Up */}
         <p className="text-gray-600 text-center mt-4">
           Don't have an account?{" "}
           <a href="/signup" className="text-blue-600 hover:underline">

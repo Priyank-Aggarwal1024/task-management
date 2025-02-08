@@ -1,17 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { signUpAction } from "@/actions/auth.actions";
-import Loading from "@/app/loading";
+import { signInAction } from "@/actions/auth.actions";
 
-export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+export default function Signin() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -22,49 +16,24 @@ export default function Signup() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setSuccess(null);
-  
-    const result = await signUpAction(formData);
+
+    const result = await signInAction(formData);
     setLoading(false);
-  
+
     if (result.error) {
       setError(result.error);
     } else {
-      setSuccess(result.success);
-  
-      // Save user ID to localStorage
       localStorage.setItem("userId", result.userId);
-  
-      setTimeout(() => (window.location.href = "/"), 200); // Redirect to home page after signup
+      window.location.href = "/";
     }
   };
-  if (loading) return <Loading />; // Show full-page loading indicator
-  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
-
+        <h2 className="text-2xl font-bold text-gray-800 text-center">Sign In</h2>
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        {success && <p className="text-green-500 text-center mt-2">{success}</p>}
-
         <form onSubmit={handleSubmit} className="mt-6">
-          {/* Name Input */}
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium">Name</label>
-            <input
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              required
-              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            />
-          </div>
-
-          {/* Email Input */}
           <div className="mb-4">
             <label className="block text-gray-700 font-medium">Email</label>
             <input
@@ -77,8 +46,6 @@ export default function Signup() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
-
-          {/* Password Input */}
           <div className="mb-6">
             <label className="block text-gray-700 font-medium">Password</label>
             <input
@@ -91,8 +58,6 @@ export default function Signup() {
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
             className={`w-full text-white py-3 rounded-md transition duration-300 ${
@@ -100,15 +65,13 @@ export default function Signup() {
             }`}
             disabled={loading}
           >
-            {loading ? "Signing Up..." : "Sign Up"}
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
-
-        {/* Link to Sign In */}
         <p className="text-gray-600 text-center mt-4">
-          Already have an account?{" "}
-          <a href="/signin" className="text-blue-600 hover:underline">
-            Sign In
+          Don't have an account?{" "}
+          <a href="/signup" className="text-blue-600 hover:underline">
+            Sign Up
           </a>
         </p>
       </div>

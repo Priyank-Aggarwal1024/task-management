@@ -18,11 +18,11 @@ const TaskSchema = new mongoose.Schema({
         default: false
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        type: mongoose.Schema.Types.ObjectId, 
         ref: "User",
         required: true
     }
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt
+}, { timestamps: true }); 
 
 const Task = mongoose.models.Task || mongoose.model("Task", TaskSchema);
 export default Task;

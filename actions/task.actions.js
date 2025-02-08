@@ -3,18 +3,18 @@
 import { connectToDatabase } from '@/utils/connectToDb';
 import { revalidatePath } from 'next/cache';
 import Task from '@/models/task.model';
-/** Fetch tasks for a specific user */
+
 export async function getTasks(userId) {
   try {
     await connectToDatabase();
-    const tasks = await Task.find({ user: userId }); // Fetch tasks for the given user
+    const tasks = await Task.find({ user: userId });
     return JSON.parse(JSON.stringify(tasks.map(task => ({
       _id: task._id.toString(),
       title: task.title,
       description: task.description,
       dueDate: task.dueDate,
       completed: task.completed,
-      user: task.user?.toString() // Convert ObjectId to string
+      user: task.user?.toString()
     }))));
   } catch (err) {
     console.error("Error fetching tasks:", err);
@@ -22,7 +22,6 @@ export async function getTasks(userId) {
   }
 }
 
-/** Add a new task for a user */
 export async function addTask(userId, title, description, dueDate) {
   try {
     await connectToDatabase();
@@ -36,12 +35,11 @@ export async function addTask(userId, title, description, dueDate) {
   }
 }
 
-/** Update a task (Only if it belongs to the user) */
 export async function updateTask(userId, id, updates) {
   try {
     await connectToDatabase();
     const updatedTask = await Task.findOneAndUpdate(
-      { _id: id, user: userId }, // Ensure the task belongs to the user
+      { _id: id, user: userId },
       updates,
       { new: true }
     );
@@ -54,7 +52,6 @@ export async function updateTask(userId, id, updates) {
   }
 }
 
-/** Delete a task (Only if it belongs to the user) */
 export async function deleteTask(userId, id) {
   try {
     await connectToDatabase();

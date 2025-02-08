@@ -30,8 +30,8 @@ const Home = () => {
 
     setLoading(true);
     try {
-      await addTask(localStorage.getItem("userId"),task.title, task.description, task.dueDate);
-      setTask({ title: "", description: "", dueDate: "" }); // Reset form
+      await addTask(localStorage.getItem("userId"), task.title, task.description, task.dueDate);
+      setTask({ title: "", description: "", dueDate: "" });
       toast.success("Task added successfully!");
       setRefresh(!refresh);
     } catch (error) {
@@ -41,16 +41,13 @@ const Home = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     setDarkMode(localStorage.getItem("theme") || "light");
   }, []);
 
   return (
-    <div
-      className={`${
-        darkMode === "dark" ? "dark bg-gray-900 text-white" : "bg-gray-100"
-      } min-h-screen`}
-    >
+    <div className={`${darkMode === "dark" ? "dark bg-gray-900 text-white" : "bg-gray-100"} min-h-screen`}>
       <Suspense fallback={<Loading />}>
         <Navbar toggleTheme={toggleTheme} />
         <Toaster position="bottom-right" />

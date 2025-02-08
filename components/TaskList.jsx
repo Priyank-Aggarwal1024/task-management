@@ -51,7 +51,7 @@ const TaskList = ({ refresh }) => {
       console.error("Update Task Error:", error);
     }
   };
-  if (loading) return <Loading />; // Show full-page loading indicator
+  if (loading) return <Loading />; 
 
   return (
     <div className="mt-6 w-full max-w-lg">
