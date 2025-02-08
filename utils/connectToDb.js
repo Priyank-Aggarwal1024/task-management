@@ -7,6 +7,7 @@ export const connectToDatabase = async ()=>{
     try{
        await mongoose.connect(mongouri);
     }catch(err){
+        console.log(err)
         throw new Error(err.message);
     }
 }
